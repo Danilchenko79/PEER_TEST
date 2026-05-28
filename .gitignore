@@ -1,0 +1,6 @@
+.idea/
+.claude/
+__pycache__/
+*.pyc
+Thumbs.db
+*.db
