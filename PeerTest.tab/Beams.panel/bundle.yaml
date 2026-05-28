@@ -1,0 +1,6 @@
+title: Beams
+layout:
+  - CheckBeamTags
+  - SelectBeamsOnView
+  - BeamsOverOpenings
+  - AutoBeamSections

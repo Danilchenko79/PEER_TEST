@@ -1,0 +1,323 @@
+﻿ADSK_A	PR_A
+ADSK_A_bent	PR_A_bent
+ADSK_B	PR_B
+ADSK_B_bent	PR_B_bent
+ADSK_C	PR_C
+ADSK_C_bent	PR_C_bent
+ADSK_D	PR_D
+ADSK_D_bent	PR_D_bent
+ADSK_E	PR_E
+ADSK_F	PR_F
+ADSK_G	PR_G
+ADSK_Q	PR_Q
+ADSK_R	PR_R
+ADSK_R_bent	PR_R_bent
+ADSK_URL документации изделия	PR_Product Documentation URL
+ADSK_URL страницы изделия	PR_Product Page URL
+ADSK_x	PR_x
+ADSK_x'	PR_x'
+ADSK_α_Angle	PR_b_Angle
+ADSK_β_Angle	PR_?_Angle
+ADSK_Активная мощность_СС	PR_Active Power_SS
+ADSK_Арматура гнутая	PR_Bent Rebar
+ADSK_Арматура семейством	PR_Rebar as Family
+ADSK_Арматура эскиз	PR_Rebar Sketch
+ADSK_Вентилятор вытяжной_Давление	PR_Exhaust Fan_Pressure
+ADSK_Вентилятор вытяжной_Частота вращения	PR_Exhaust Fan_Rotation Speed
+ADSK_Вентилятор приточный_Давление	PR_Supply Fan_Pressure
+ADSK_Вентилятор приточный_Частота вращения	PR_Supply Fan_Rotation Speed
+ADSK_Версия Revit	PR_Revit Version
+ADSK_Версия семейства	PR_Family Version
+ADSK_Верхний порог напряжения	PR_Upper Voltage Threshold
+ADSK_Владелец вида	PR_View Owner
+ADSK_Высота строки_Изображение	PR_Row Height_Image
+ADSK_Выступ метиза	PR_Fastener Protrusion
+ADSK_Вытяжка от МО	PR_Local Exhaust
+ADSK_Главная деталь изделия	PR_Assembly Main Detail
+ADSK_Главная деталь конструкции	PR_Structure Main Detail
+ADSK_Граница трубопровода. Конец	PR_Pipeline Boundary End
+ADSK_Граница трубопровода. Начало	PR_Pipeline Boundary Start
+ADSK_Группа конструкций	PR_Structure Group
+ADSK_Группа конструкций КЖС	PR_Precast RC Structure Group
+ADSK_Группирование	PR_Grouping
+ADSK_Давление среды	PR_Medium Pressure
+ADSK_Двигатель вентилятора вытяжного_Частота вращения	PR_Exhaust Fan Motor_Rotation Speed
+ADSK_Двигатель вентилятора приточного_Частота вращения	PR_Supply Fan Motor_Rotation Speed
+ADSK_Деталь наоборот	PR_Detail Mirrored
+ADSK_Деталь_Префикс	PR_Detail_Prefix
+ADSK_Диаметр арматуры	PR_Rebar Diameter
+ADSK_Диаметр оправки арматуры	PR_Rebar Mandrel Diameter
+ADSK_Диаметр условный	PR_Nominal Diameter
+ADSK_Длина арматуры	PR_Rebar Length
+ADSK_Длина арматуры по детали	PR_Rebar Length per Detail
+ADSK_Длина балки аналитическая	PR_Beam Analytical Length
+ADSK_Длина балки истинная	PR_Beam True Length
+ADSK_Длина резьбы метиза	PR_Fastener Thread Length
+ADSK_Единица измерения	PR_Unit of Measurement
+ADSK_Завод-изготовитель	PR_Manufacturer
+ADSK_Закладная деталь	PR_Embedded Detail
+ADSK_Зона	PR_Zone
+ADSK_Зона обслуживания	PR_Service Zone
+ADSK_Имя источника питания	PR_Power Source Name
+ADSK_Имя панели	PR_Panel Name
+ADSK_Имя устройства	PR_Device Name
+ADSK_Индекс квартиры	PR_Apartment Index
+ADSK_Каркас	PR_Frame
+ADSK_Категория и группа взрывоопасности по ПУЭ 	PR_Explosion Category and Group per PUE
+ADSK_Категория основы	PR_Host Category
+ADSK_Категория помещения	PR_Room Category
+ADSK_Категория проема	PR_Opening Category
+ADSK_Категория трубопровода	PR_Pipeline Category
+ADSK_Категория электроснабжения	PR_Power Supply Category
+ADSK_Класс арматуры	PR_Rebar Class
+ADSK_Класс взрывоопасной зоны	PR_Explosive Zone Class
+ADSK_Класс пожароопасной зоны	PR_Fire Hazard Zone Class
+ADSK_Классификация нагрузок	PR_Load Classification
+ADSK_Классификация нагрузок_СС	PR_Load Classification_SS
+ADSK_Код изделия	PR_Product Code
+ADSK_Код крышки	PR_Cover Code
+ADSK_Код лотка	PR_Tray Code
+ADSK_Код металлопроката	PR_Rolled Steel Code
+ADSK_Код перегородки	PR_Partition Code
+ADSK_Количество	PR_Quantity
+ADSK_Количество занимаемых адресов	PR_Occupied Address Count
+ADSK_Количество комнат	PR_Room Count
+ADSK_Количество основы	PR_Host Quantity
+ADSK_Количество перегородок	PR_Partition Count
+ADSK_Количество позиций	PR_Position Count
+ADSK_Количество полюсов_СС	PR_Number of Poles_SS
+ADSK_Количество светильников	PR_Luminaire Count
+ADSK_Количество секций радиатора	PR_Radiator Section Count
+ADSK_Количество фаз	PR_Number of Phases
+ADSK_Количество фаз числовое	PR_Number of Phases Numeric
+ADSK_Компенсация вытяжки от МО	PR_Local Exhaust Compensation
+ADSK_Комплект	PR_Set
+ADSK_Комплект чертежей	PR_Drawing Set
+ADSK_Коэффициент запаса	PR_Safety Factor
+ADSK_Коэффициент мощности	PR_Power Factor
+ADSK_Коэффициент мощности_СС	PR_Power Factor_SS
+ADSK_Коэффициент площади	PR_Area Coefficient
+ADSK_КПД	PR_Efficiency
+ADSK_Кратность вытяжного воздуха	PR_Exhaust Air Multiplicity
+ADSK_Кратность приточного воздуха	PR_Supply Air Multiplicity
+ADSK_Кратность пускового тока	PR_Starting Current Ratio
+ADSK_Максимальная потребляемая мощность	PR_Maximum Power Consumption
+ADSK_Марка	PR_Mark
+ADSK_Марка изделия	PR_Product Mark
+ADSK_Марка конструкции	PR_Structure Mark
+ADSK_Марка метиза	PR_Fastener Mark
+ADSK_Масса	PR_Mass
+ADSK_Масса на единицу длины	PR_Mass per Unit Length
+ADSK_Масса на единицу площади	PR_Mass per Unit Area
+ADSK_Масса погонного метра	PR_Mass per Linear Meter
+ADSK_Масса элемента	PR_Element Mass
+ADSK_Масса_Текст	PR_Mass_Text
+ADSK_Материал	PR_Material
+ADSK_Материал наименование	PR_Material Name
+ADSK_Материал обозначение	PR_Material Designation
+ADSK_Материал тип подсчета	PR_Material Calculation Type
+ADSK_Метка основы	PR_Host Mark
+ADSK_Назначение вида	PR_View Purpose
+ADSK_Наименование	PR_Name
+ADSK_Наименование вытяжной системы	PR_Exhaust System Name
+ADSK_Наименование вытяжной системы от МО	PR_Local Exhaust System Name
+ADSK_Наименование и номер цвета	PR_Color Name and Number
+ADSK_Наименование краткое	PR_Short Name
+ADSK_Наименование линии трубопровода	PR_Pipeline Line Name
+ADSK_Наименование приточной системы	PR_Supply System Name
+ADSK_Наименование профиля	PR_Profile Name
+ADSK_Наименование системы компенсации МО	PR_Local Exhaust Compensation System Name
+ADSK_Наименование элемента фасада	PR_Facade Element Name
+ADSK_Наименование_Префикс	PR_Name_Prefix
+ADSK_Наименование_Текст1	PR_Name_Text1
+ADSK_Напряжение	PR_Voltage
+ADSK_Напряжение_СС	PR_Voltage_SS
+ADSK_Настройка клапана	PR_Valve Setting
+ADSK_Незаданный параметр	PR_Undefined Parameter
+ADSK_Нижний порог напряжения	PR_Lower Voltage Threshold
+ADSK_Номер в шлейфе	PR_Loop Number
+ADSK_Номер здания	PR_Building Number
+ADSK_Номер ЗКПС	PR_Fire Alarm Zone Number
+ADSK_Номер квартиры	PR_Apartment Number
+ADSK_Номер контроллера	PR_Controller Number
+ADSK_Номер корпуса	PR_Building Body Number
+ADSK_Номер линии	PR_Line Number
+ADSK_Номер листа элемента	PR_Element Sheet Number
+ADSK_Номер помещения квартиры	PR_Apartment Room Number
+ADSK_Номер секции	PR_Section Number
+ADSK_Номер стояка	PR_Riser Number
+ADSK_Номер точки доступа	PR_Access Point Number
+ADSK_Номер устройства	PR_Device Number
+ADSK_Номинальная мощность	PR_Rated Power
+ADSK_Норма расхода	PR_Consumption Rate
+ADSK_Нормируемая освещенность	PR_Required Illuminance
+ADSK_Обозначение	PR_Designation
+ADSK_Основной материал элемента	PR_Main Element Material
+ADSK_Отверстие_Высота	PR_Opening_Height
+ADSK_Отверстие_Глубина	PR_Opening_Depth
+ADSK_Отверстие_Отметка от нуля	PR_Opening_Elevation from Zero
+ADSK_Отверстие_Отметка от этажа	PR_Opening_Elevation from Floor
+ADSK_Отверстие_Отметка этажа	PR_Opening_Floor Elevation
+ADSK_Отверстие_Функция	PR_Opening_Function
+ADSK_Отверстие_Ширина	PR_Opening_Width
+ADSK_Откосы Глубина	PR_Reveal Depth
+ADSK_Открывание	PR_Opening Type
+ADSK_Параметр цепи	PR_Circuit Parameter
+ADSK_Перегородка лотка	PR_Tray Partition
+ADSK_Площадь квартиры	PR_Apartment Area
+ADSK_Площадь квартиры жилая	PR_Apartment Living Area
+ADSK_Площадь квартиры общая	PR_Apartment Total Area
+ADSK_Площадь проемов	PR_Opening Area
+ADSK_Площадь с коэффициентом	PR_Area with Coefficient
+ADSK_Подрезка длина	PR_Trim Length
+ADSK_Подрезка ширина	PR_Trim Width
+ADSK_Позиция	PR_Position
+ADSK_Позиция ведомость элементов	PR_Position Element Schedule
+ADSK_Позиция на схеме	PR_Position on Diagram
+ADSK_Позиция отделки	PR_Finish Position
+ADSK_Позиция_Комплект	PR_Position_Set
+ADSK_Позиция_Сортировка	PR_Position_Sorting
+ADSK_Полная мощность	PR_Apparent Power
+ADSK_Полная установленная мощность_СС	PR_Total Installed Apparent Power_SS
+ADSK_Потеря давления воздуха	PR_Air Pressure Loss
+ADSK_Потеря давления воздуха в нагревателе	PR_Air Pressure Loss in Heater
+ADSK_Потеря давления воздуха в охладителе	PR_Air Pressure Loss in Cooler
+ADSK_Потеря давления жидкости	PR_Liquid Pressure Loss
+ADSK_Предел огнестойкости	PR_Fire Resistance Rating
+ADSK_Предел огнестойкости экземпляра	PR_Instance Fire Resistance Rating
+ADSK_Примечание	PR_Note
+ADSK_Примечание к виду	PR_View Note
+ADSK_Принадлежность к разделу	PR_Section Affiliation
+ADSK_Приток к МО	PR_Supply Air to Local Exhaust
+ADSK_Пропускная способность	PR_Throughput Capacity
+ADSK_Пространственный каркас	PR_Spatial Frame
+ADSK_Пусковой ток	PR_Starting Current
+ADSK_Размер в погонных метрах	PR_Dimension in Linear Meters
+ADSK_Размер_Высота	PR_Dimension_Height
+ADSK_Размер_Высота базового уровня	PR_Dimension_Base Level Elevation
+ADSK_Размер_Глубина	PR_Dimension_Depth
+ADSK_Размер_Диаметр	PR_Dimension_Diameter
+ADSK_Размер_ДиаметрИзделия	PR_Dimension_Product Diameter
+ADSK_Размер_Длина	PR_Dimension_Length
+ADSK_Размер_Объем	PR_Dimension_Volume
+ADSK_Размер_Отметка расположения	PR_Dimension_Location Elevation
+ADSK_Размер_Площадь	PR_Dimension_Area
+ADSK_Размер_Радиус	PR_Dimension_Radius
+ADSK_Размер_Смещение от уровня	PR_Dimension_Offset from Level
+ADSK_Размер_Толщина	PR_Dimension_Thickness
+ADSK_Размер_Толщина основы	PR_Dimension_Host Thickness
+ADSK_Размер_Толщина полки	PR_Dimension_Flange Thickness
+ADSK_Размер_Толщина стенки	PR_Dimension_Wall Thickness
+ADSK_Размер_УголПоворота	PR_Dimension_Rotation Angle
+ADSK_Размер_Уклон	PR_Dimension_Slope
+ADSK_Размер_Ширина	PR_Dimension_Width
+ADSK_Распределенная нагрузка по линии	PR_Distributed Linear Load
+ADSK_Расход воздуха	PR_Air Flow Rate
+ADSK_Расход воздуха вытяжной	PR_Exhaust Air Flow Rate
+ADSK_Расход воздуха приточный	PR_Supply Air Flow Rate
+ADSK_Расход ГВ	PR_Hot Water Flow Rate
+ADSK_Расход жидкости	PR_Liquid Flow Rate
+ADSK_Расход канализационных стоков	PR_Sewage Flow Rate
+ADSK_Расход теплоносителя	PR_Heat Carrier Flow Rate
+ADSK_Расход ХВ	PR_Cold Water Flow Rate
+ADSK_Расход холодоносителя	PR_Coolant Flow Rate
+ADSK_Расчетная вытяжка	PR_Design Exhaust Air
+ADSK_Расчетное количество людей с временным пребыванием	PR_Design Number of Temporary Occupants
+ADSK_Расчетное количество людей с постоянным пребыванием	PR_Design Number of Permanent Occupants
+ADSK_Расчетный приток	PR_Design Supply Air
+ADSK_Свободный напор воздуха	PR_Free Air Pressure
+ADSK_Свободный напор жидкости	PR_Free Liquid Pressure
+ADSK_Система_Имя	PR_System_Name
+ADSK_Система_Классификация	PR_System_Classification
+ADSK_Система_Обозначение	PR_System_Designation
+ADSK_Система_Сокращение	PR_System_Abbreviation
+ADSK_Система_Тип	PR_System_Type
+ADSK_Сопротивление воздушного фильтра	PR_Air Filter Resistance
+ADSK_Способ подсчета массы	PR_Mass Calculation Method
+ADSK_Срубка сваи	PR_Pile Cutting
+ADSK_Степень взрывозащиты_Ex	PR_Explosion Protection Rating_Ex
+ADSK_Степень защиты_IP	PR_Protection Rating_IP
+ADSK_Текст отметка расположения	PR_Location Elevation Text
+ADSK_Температура в помещении	PR_Room Temperature
+ADSK_Температура воздуха на входе в нагреватель	PR_Air Temperature at Heater Inlet
+ADSK_Температура воздуха на входе в охладитель	PR_Air Temperature at Cooler Inlet
+ADSK_Температура воздуха на выходе из нагревателя	PR_Air Temperature at Heater Outlet
+ADSK_Температура воздуха на выходе из охладителя	PR_Air Temperature at Cooler Outlet
+ADSK_Температура обратной линии	PR_Return Line Temperature
+ADSK_Температура подающей линии	PR_Supply Line Temperature
+ADSK_Температура среды	PR_Medium Temperature
+ADSK_Тепловая мощность	PR_Thermal Power
+ADSK_Теплопоступления от оборудования	PR_Equipment Heat Gain
+ADSK_Теплопотери	PR_Heat Loss
+ADSK_Техническая характеристика	PR_Technical Specification
+ADSK_Технологическая зона	PR_Technological Zone
+ADSK_Тип воздушного фильтра	PR_Air Filter Type
+ADSK_Тип квартиры	PR_Apartment Type
+ADSK_Тип помещения	PR_Room Type
+ADSK_Тип элемента КЖ	PR_RC Element Type
+ADSK_Тип элемента КМ	PR_Steel Structure Element Type
+ADSK_Типоразмер элемента узла	PR_Node Element Type Size
+ADSK_Ток	PR_Current
+ADSK_Ток дежурного режима	PR_Standby Mode Current
+ADSK_Ток тревожного режима	PR_Alarm Mode Current
+ADSK_Толщина стенки	PR_Wall Thickness
+ADSK_Толщина стены	PR_Wall Thickness in Family
+ADSK_Транспортируемый продукт	PR_Transported Product
+ADSK_Уклон	PR_Slope
+ADSK_Усилие_M	PR_Force_M
+ADSK_Усилие_N	PR_Force_N
+ADSK_Усилие_Q	PR_Force_Q
+ADSK_Форма арматуры	PR_Rebar Shape
+ADSK_Форма отгибами	PR_Shape by Bends
+ADSK_Холодильная мощность	PR_Cooling Capacity
+ADSK_Цифровые обозначения вещества	PR_Substance Digital Designations
+ADSK_Частота вращения вентилятора	PR_Fan Rotation Speed
+ADSK_Частота вращения двигателя	PR_Motor Rotation Speed
+ADSK_Шаг элементов	PR_Element Spacing
+ADSK_Штамп боковой_1 должность	PR_Side Stamp_1 Position
+ADSK_Штамп боковой_1 фамилия	PR_Side Stamp_1 Last Name
+ADSK_Штамп боковой_2 должность	PR_Side Stamp_2 Position
+ADSK_Штамп боковой_2 фамилия	PR_Side Stamp_2 Last Name
+ADSK_Штамп боковой_3 должность	PR_Side Stamp_3 Position
+ADSK_Штамп боковой_3 фамилия	PR_Side Stamp_3 Last Name
+ADSK_Штамп боковой_4 должность	PR_Side Stamp_4 Position
+ADSK_Штамп боковой_4 фамилия	PR_Side Stamp_4 Last Name
+ADSK_Штамп боковой_5 должность	PR_Side Stamp_5 Position
+ADSK_Штамп боковой_5 фамилия	PR_Side Stamp_5 Last Name
+ADSK_Штамп боковой_6 должность	PR_Side Stamp_6 Position
+ADSK_Штамп боковой_6 фамилия	PR_Side Stamp_6 Last Name
+ADSK_Штамп боковой_7 должность	PR_Side Stamp_7 Position
+ADSK_Штамп боковой_7 фамилия	PR_Side Stamp_7 Last Name
+ADSK_Штамп боковой_8 должность	PR_Side Stamp_8 Position
+ADSK_Штамп боковой_8 фамилия	PR_Side Stamp_8 Last Name
+ADSK_Штамп боковой_Инвентарный номер	PR_Side Stamp_Inventory Number
+ADSK_Штамп Номер страницы	PR_Stamp Page Number
+ADSK_Штамп титульный_1 должность	PR_Title Stamp_1 Position
+ADSK_Штамп титульный_1 фамилия	PR_Title Stamp_1 Last Name
+ADSK_Штамп титульный_2 должность	PR_Title Stamp_2 Position
+ADSK_Штамп титульный_2 фамилия	PR_Title Stamp_2 Last Name
+ADSK_Штамп титульный_Вид документации	PR_Title Stamp_Documentation Type
+ADSK_Штамп титульный_Год выпуска	PR_Title Stamp_Year of Issue
+ADSK_Штамп титульный_Директор	PR_Title Stamp_Director
+ADSK_Штамп титульный_Наименование документа	PR_Title Stamp_Document Name
+ADSK_Штамп титульный_Номер тома	PR_Title Stamp_Volume Number
+ADSK_Штамп_1 должность	PR_Stamp_1 Position
+ADSK_Штамп_1 фамилия	PR_Stamp_1 Last Name
+ADSK_Штамп_2 должность	PR_Stamp_2 Position
+ADSK_Штамп_2 фамилия	PR_Stamp_2 Last Name
+ADSK_Штамп_3 должность	PR_Stamp_3 Position
+ADSK_Штамп_3 фамилия	PR_Stamp_3 Last Name
+ADSK_Штамп_4 должность	PR_Stamp_4 Position
+ADSK_Штамп_4 фамилия	PR_Stamp_4 Last Name
+ADSK_Штамп_5 должность	PR_Stamp_5 Position
+ADSK_Штамп_5 фамилия	PR_Stamp_5 Last Name
+ADSK_Штамп_6 должность	PR_Stamp_6 Position
+ADSK_Штамп_6 фамилия	PR_Stamp_6 Last Name
+ADSK_Штамп_Имя листа пользовательское	PR_Stamp_Custom Sheet Name
+ADSK_Штамп_Количество листов	PR_Stamp_Sheet Count
+ADSK_Штамп_Наименование объекта	PR_Stamp_Object Name
+ADSK_Штамп_Раздел проекта	PR_Stamp_Project Section
+ADSK_Элемент круглый	PR_Round Element
+ADSK_Эскиз сечения	PR_Section Sketch
+ADSK_Этаж	PR_Floor
+ADSK_Этап возведения	PR_Construction Phase

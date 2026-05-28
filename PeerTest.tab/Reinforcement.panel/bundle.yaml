@@ -1,0 +1,10 @@
+title: Reinforcement
+layout:
+  - CopyRebarBetweenViews
+  - RebarForTag
+  - RebarTag
+  - RebarRenumber
+  - SetReinforcementPartition
+  - ExpandMultiBarSets
+  - ShowAllRebarInView
+  - RebarUnify

@@ -1,0 +1,99 @@
+﻿schedule,section,idx,header,field_name,kind,param_name,guid,spec,group,is_calculated,is_combined,is_broken,note
+Rebar_Schedule_F1,field,0,Ð Ð°ÑÑ_ÐÐµÑÐºÐ° Ð¾ÑÐ½Ð¾Ð²Ñ,Ð Ð°ÑÑ_ÐÐµÑÐºÐ° Ð¾ÑÐ½Ð¾Ð²Ñ,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,1,ÐÐ¾Ð¼Ð¼ÐµÐ½ÑÐ°ÑÐ¸Ð¸,Comments,Instance,<BIP -1010106>,,,,False,False,False,"BUILTIN, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,2,ÐÐ¼Ñ ÑÐ±Ð¾ÑÐºÐ¸,Assembly Name,Instance,<BIP -1150420>,,,,False,False,False,"BUILTIN, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,3,,ADSK_ÐÐ°ÑÐºÐ° ÐºÐ¾Ð½ÑÑÑÑÐºÑÐ¸Ð¸ADSK_ÐÐ°ÑÐºÐ° Ð¸Ð·Ð´ÐµÐ»Ð¸ÑADSK_ÐÐµÑÐ°Ð»Ñ_ÐÑÐµÑÐ¸ÐºÑADSK_ÐÐ¾Ð·Ð¸ÑÐ¸Ñ,CombinedParameter,<combined parameter>,,,,False,True,False,COMBINED
+Rebar_Schedule_F1,field,4,,"""ÐÑÐ¾Ð±ÐµÐ»_1""",Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,5,,Ð Ð°ÑÑ_ÐÐ±Ð¾Ð·Ð½Ð°ÑÐµÐ½Ð¸Ðµ,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,6,,Ð Ð°ÑÑ_ÐÐ°Ð¸Ð¼ÐµÐ½Ð¾Ð²Ð°Ð½Ð¸Ðµ,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,7,,Ð Ð°ÑÑ_Ð¡Ð¸Ð¼Ð²Ð¾Ð»,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,8,,Ð Ð°ÑÑ_ÐÐ°ÑÐºÐ°,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,9,,"Ð Ð°ÑÑ_""LÐ¾Ð±Ñ(Ð¼Ð¿)"" / ""L=""",Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,10,,Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð°,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,11,ÐÐ¿,PR_Structure Mark,Instance,PR_Structure Mark,5d369dfb-17a2-4ae2-a1a1-bdfc33ba7405,Text,Identity Data,False,False,False,"SHARED, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,12,ÐÑ,PR_Product Mark,Instance,PR_Product Mark,92ae0425-031b-40a9-8904-023f7389963b,Text,Identity Data,False,False,False,"SHARED, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,13,ÐÐ¾Ð·.,PR_Position,Instance,PR_Position,ae8ff999-1f22-4ed7-ad33-61503d85f0f4,Text,Identity Data,False,False,False,"SHARED, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,14,,Ð Ð°ÑÑ_ÐÐ¾Ð»-Ð²Ð¾_Ð´Ð»Ñ ÐºÐ°ÑÐºÐ°ÑÐ¾Ð² Ð¸ Ð´ÐµÑÐ°Ð»ÐµÐ¹,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,15,,Ð Ð°ÑÑ_ÐÐ°ÑÑÐ° ÐµÐ´.ÐºÐ³_Ð´Ð»Ñ ÐºÐ°ÑÐºÐ°ÑÐ¾Ð² Ð¸ Ð´ÐµÑÐ°Ð»ÐµÐ¹,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,16,,Ð Ð°ÑÑ_ÐÑÐ¸Ð¼ÐµÑÐ°Ð½Ð¸Ðµ Ñ Ð¾Ð±ÑÐµÐ¹ Ð¼Ð°ÑÑÐ¾Ð¹,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,17,,PR_Note,Instance,PR_Note,a85b7661-26b0-412f-979c-66af80b4b2c3,Text,Text,False,False,False,SHARED
+Rebar_Schedule_F1,field,18,ADSK_ÐÐ±Ð¾Ð·Ð½Ð°ÑÐµÐ½Ð¸Ñ,PR_Designation,Instance,PR_Designation,9c98831b-9450-412d-b072-7d69b39f4029,Text,Text,False,False,False,"SHARED, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,19,Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° ÑÑÐµÑÐ¶Ð½Ñ,Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° ÑÑÐµÑÐ¶Ð½Ñ,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,20,Ð Ð°ÑÑ_ÐÐ¾Ð»-Ð²Ð¾,Ð Ð°ÑÑ_ÐÐ¾Ð»-Ð²Ð¾,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,21,Ð Ð°ÑÑ_ÐÐ°ÑÑÐ° ÐµÐ´.ÐºÐ³,Ð Ð°ÑÑ_ÐÐ°ÑÑÐ° ÐµÐ´.ÐºÐ³,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,22,ÐÐ»Ð¸Ð½Ð° ÑÑÐµÑÐ¶Ð½Ñ,Bar Length,Instance,<BIP -1017016>,,,,False,False,False,"BUILTIN, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,23,ADSK_ÐÐ»Ð¸Ð½Ð° Ð°ÑÐ¼Ð°ÑÑÑÑ,ADSK_ÐÐ»Ð¸Ð½Ð° Ð°ÑÐ¼Ð°ÑÑÑÑ,Instance,ADSK_ÐÐ»Ð¸Ð½Ð° Ð°ÑÐ¼Ð°ÑÑÑÑ,ceadf021-b887-4539-93af-a1e8b82bcf71,Reinforcement Length,Dimensions,False,False,False,SHARED
+Rebar_Schedule_F1,field,24,ÐÐ¾Ð»Ð¸ÑÐµÑÑÐ²Ð¾,Quantity,Instance,<BIP -1017012>,,,,False,False,False,"BUILTIN, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,25,ADSK_ÐÐ¾Ð»Ð¸ÑÐµÑÑÐ²Ð¾,PR_Quantity,Instance,PR_Quantity,8d057bb3-6ccd-4655-9165-55526691fe3a,Number,Set,False,False,False,"SHARED, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,26,ADSK_ÐÐ¾Ð´ Ð¼ÐµÑÐ°Ð»Ð»Ð¾Ð¿ÑÐ¾ÐºÐ°ÑÐ°,PR_Rolled Steel Code,Instance,PR_Rolled Steel Code,32a47c7f-e91d-4a8e-bf24-927cb679b4d1,Number,Rebar Set,False,False,False,"SHARED, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,27,ADSK_Ð Ð°Ð·Ð¼ÐµÑ Ð² Ð¿Ð¾Ð³Ð¾Ð½Ð½ÑÑ Ð¼ÐµÑÑÐ°Ñ,PR_Dimension in Linear Meters,Instance,PR_Dimension in Linear Meters,844a01e2-19fc-4dc5-baa0-a4bda30ef1f6,Yes/No,Data,False,False,False,"SHARED, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,28,ADSK_ÐÑÐ¼Ð°ÑÑÑÐ° ÑÐµÐ¼ÐµÐ¹ÑÑÐ²Ð¾Ð¼,PR_Rebar as Family,Instance,PR_Rebar as Family,fc0665b7-63dd-44f2-8805-558177eccfb1,Yes/No,Data,False,False,False,"SHARED, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,29,ADSK_ÐÐ°ÑÑÐ° Ð½Ð° ÐµÐ´Ð¸Ð½Ð¸ÑÑ Ð´Ð»Ð¸Ð½Ñ,PR_Mass per Unit Length,Instance,PR_Mass per Unit Length,3d4f16d7-7f83-4522-a1e5-ef2dd847a082,Mass per Unit Length,Data,False,False,False,"SHARED, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,30,ADSK_ÐÐ°ÑÑÐ° ÑÐ»ÐµÐ¼ÐµÐ½ÑÐ°,PR_Element Mass,Instance,PR_Element Mass,5913a1f9-0b38-4364-96fe-a6f3cb7fcc68,Mass,Data,False,False,False,"SHARED, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,31,ADSK_Ð¤Ð¾ÑÐ¼Ð° Ð°ÑÐ¼Ð°ÑÑÑÑ,PR_Rebar Shape,Instance,PR_Rebar Shape,e2fa6173-f661-4eef-ac43-0946070a8e19,Integer,Graphics,False,False,False,"SHARED, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,32,ÐÐ¸Ð°Ð¼ÐµÑÑ ÑÑÐµÑÐ¶Ð½Ñ,Bar Diameter,Instance,<BIP -1017000>,,,,False,False,False,"BUILTIN, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,33,ADSK_ÐÐ¸Ð°Ð¼ÐµÑÑ Ð°ÑÐ¼Ð°ÑÑÑÑ,ADSK_ÐÐ¸Ð°Ð¼ÐµÑÑ Ð°ÑÐ¼Ð°ÑÑÑÑ,Instance,ADSK_ÐÐ¸Ð°Ð¼ÐµÑÑ Ð°ÑÐ¼Ð°ÑÑÑÑ,a13859b3-a733-4df0-ba54-ba74966408e9,Bar Diameter,Dimensions,False,False,False,SHARED
+Rebar_Schedule_F1,field,34,ÐÐµÑÐºÐ° Ð¾ÑÐ½Ð¾Ð²Ñ,Host Mark,Instance,<BIP -1154619>,,,,False,False,False,"BUILTIN, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,35,ADSK_ÐÐµÑÐºÐ° Ð¾ÑÐ½Ð¾Ð²Ñ,ADSK_ÐÐµÑÐºÐ° Ð¾ÑÐ½Ð¾Ð²Ñ,Instance,ADSK_ÐÐµÑÐºÐ° Ð¾ÑÐ½Ð¾Ð²Ñ,c9fc3f3a-0e04-42a5-bacc-6cb49f619cdb,Text,Identity Data,False,False,False,SHARED
+Rebar_Schedule_F1,field,36,ADSK_ÐÐ»Ð°Ð²Ð½Ð°Ñ Ð´ÐµÑÐ°Ð»Ñ Ð¸Ð·Ð´ÐµÐ»Ð¸Ñ,PR_Assembly Main Detail,Instance,PR_Assembly Main Detail,7b011a82-6ead-45ee-a188-7a7721dfb452,Yes/No,Data,False,False,False,"SHARED, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,37,ADSK_ÐÐ»Ð°Ð²Ð½Ð°Ñ Ð´ÐµÑÐ°Ð»Ñ ÐºÐ¾Ð½ÑÑÑÑÐºÑÐ¸Ð¸,PR_Structure Main Detail,Instance,PR_Structure Main Detail,8df083dd-dcf5-410c-b984-f3e38f4d4314,Yes/No,Data,False,False,False,"SHARED, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,38,ADSK_ÐÐ°Ð¸Ð¼ÐµÐ½Ð¾Ð²Ð°Ð½Ð¸Ðµ_Ð¢ÐµÐºÑÑ1,PR_Name_Text1,Instance,PR_Name_Text1,3601a2b2-2cdc-4e35-bb35-1de1737c45a8,Text,Identity Data,False,False,False,"SHARED, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,39,ADSK_ÐÐ°Ð¸Ð¼ÐµÐ½Ð¾Ð²Ð°Ð½Ð¸Ðµ,PR_Name,Instance,PR_Name,e6e0f5cd-3e26-485b-9342-23882b20eb43,Text,Text,False,False,False,"SHARED, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,40,ADSK_ÐÐ°Ð¸Ð¼ÐµÐ½Ð¾Ð²Ð°Ð½Ð¸ÐµÐ¡Ð¾ÑÑÐ°Ð²Ð½Ð¾Ðµ_ÐÑÐµÑÐ¸ÐºÑ,ADSK_ÐÐ°Ð¸Ð¼ÐµÐ½Ð¾Ð²Ð°Ð½Ð¸Ðµ_ÐÑÐµÑÐ¸ÐºÑ,Instance,ADSK_ÐÐ°Ð¸Ð¼ÐµÐ½Ð¾Ð²Ð°Ð½Ð¸Ðµ_ÐÑÐµÑÐ¸ÐºÑ,3aa2840f-b18e-4ca0-95bb-9784cc9b532f,Text,Text,False,False,False,"SHARED, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,41,ÐÐ¿Ð¸ÑÐ°Ð½Ð¸Ðµ,Description,ElementType,<BIP -1010103>,,,,False,False,False,"BUILTIN, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,42,ADSK_ÐÑÑÐ¿Ð¿Ð° ÐºÐ¾Ð½ÑÑÑÑÐºÑÐ¸Ð¹,ADSK_ÐÑÑÐ¿Ð¿Ð° ÐºÐ¾Ð½ÑÑÑÑÐºÑÐ¸Ð¹,Instance,ADSK_ÐÑÑÐ¿Ð¿Ð° ÐºÐ¾Ð½ÑÑÑÑÐºÑÐ¸Ð¹,f1314dc8-abb2-477c-bfb6-b096760b90c1,Integer,Data,False,False,False,SHARED
+Rebar_Schedule_F1,field,43,N,N,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,44,%N,%N,Percentage,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,45,1/%N,1/%N,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,46,ÐÐ».ÐÐµÑ.ÐÐ¾Ð½ÑÑÑ,ÐÐ».ÐÐµÑ.ÐÐ¾Ð½ÑÑÑ,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,47,%ÐÐ».ÐÐµÑ.ÐÐ¾Ð½ÑÑÑ,%ÐÐ».ÐÐµÑ.ÐÐ¾Ð½ÑÑÑ,Percentage,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,48,1/%ÐÐ».ÐÐµÑ.ÐÐ¾Ð½ÑÑÑ,1/%ÐÐ».ÐÐµÑ.ÐÐ¾Ð½ÑÑÑ,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,49,ÐÐµ ÐÐ».ÐÐµÑ.ÐÐ¾Ð½ÑÑÑ,ÐÐµ ÐÐ».ÐÐµÑ.ÐÐ¾Ð½ÑÑÑ,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,50,%ÐÐµ ÐÐ».ÐÐµÑ.ÐÐ¾Ð½ÑÑÑ,%ÐÐµ ÐÐ».ÐÐµÑ.ÐÐ¾Ð½ÑÑÑ,Percentage,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,51,1/%ÐÐµ ÐÐ».ÐÐµÑ.ÐÐ¾Ð½ÑÑÑ,1/%ÐÐµ ÐÐ».ÐÐµÑ.ÐÐ¾Ð½ÑÑÑ,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,52,Ð Ð°ÑÑ_ÐÐ¾Ð». ÐºÐ°ÑÐºÐ°ÑÐ¾Ð² ÐºÐ¾Ð½ÑÑÑ,Ð Ð°ÑÑ_ÐÐ¾Ð». ÐºÐ°ÑÐºÐ°ÑÐ¾Ð² ÐºÐ¾Ð½ÑÑÑ,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,53,ÐÐ».ÐÐµÑ.ÐÐ·Ð´ÐµÐ»Ð¸Ñ,ÐÐ».ÐÐµÑ.ÐÐ·Ð´ÐµÐ»Ð¸Ñ,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,54,%ÐÐ».ÐÐµÑ.ÐÐ·Ð´ÐµÐ»Ð¸Ñ,%ÐÐ».ÐÐµÑ.ÐÐ·Ð´ÐµÐ»Ð¸Ñ,Percentage,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,55,1/%ÐÐ».ÐÐµÑ.ÐÐ·Ð´ÐµÐ»Ð¸Ñ,1/%ÐÐ».ÐÐµÑ.ÐÐ·Ð´ÐµÐ»Ð¸Ñ,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,56,ÐÐµ ÐÐ».ÐÐµÑ.ÐÐ·Ð´ÐµÐ»Ð¸Ñ,ÐÐµ ÐÐ».ÐÐµÑ.ÐÐ·Ð´ÐµÐ»Ð¸Ñ,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,57,%ÐÐµ ÐÐ».ÐÐµÑ.ÐÐ·Ð´ÐµÐ»Ð¸Ñ,%ÐÐµ ÐÐ».ÐÐµÑ.ÐÐ·Ð´ÐµÐ»Ð¸Ñ,Percentage,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,58,1/%ÐÐµ ÐÐ».ÐÐµÑ.ÐÐ·Ð´ÐµÐ»Ð¸Ñ,1/%ÐÐµ ÐÐ».ÐÐµÑ.ÐÐ·Ð´ÐµÐ»Ð¸Ñ,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,59,Ð Ð°ÑÑ_ÐÐ¾Ð». ÐºÐ°ÑÐºÐ°ÑÐ¾Ð² Ð¸Ð·Ð´ÐµÐ»Ð¸Ð¹,Ð Ð°ÑÑ_ÐÐ¾Ð». ÐºÐ°ÑÐºÐ°ÑÐ¾Ð² Ð¸Ð·Ð´ÐµÐ»Ð¸Ð¹,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,60,Ð Ð°ÑÑ_ÐÐ»Ñ ÑÐ¾ÑÑÐ¸ÑÐ¾Ð²ÐºÐ¸,Ð Ð°ÑÑ_ÐÐ»Ñ ÑÐ¾ÑÑÐ¸ÑÐ¾Ð²ÐºÐ¸,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,61,Ð Ð°ÑÑ_Ð¡Ð¾ÑÑÐ¸ÑÐ¾Ð²ÐºÐ°_ÐÐµÑÐ°Ð»Ñ_ÐÑÐµÑÐ¸ÐºÑ,Ð Ð°ÑÑ_Ð¡Ð¾ÑÑÐ¸ÑÐ¾Ð²ÐºÐ°_ÐÐµÑÐ°Ð»Ñ_ÐÑÐµÑÐ¸ÐºÑ,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,62,Ð Ð°ÑÑ_Ð¡Ð¾ÑÑÐ¸ÑÐ¾Ð²ÐºÐ°_ÐÐ,Ð Ð°ÑÑ_Ð¡Ð¾ÑÑÐ¸ÑÐ¾Ð²ÐºÐ°_ÐÐ,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,63,Ð Ð°ÑÑ_Ð¡Ð¾ÑÑÐ¸ÑÐ¾Ð²ÐºÐ°_ÐÐ»Ð¸Ð½Ð° ÑÑÐµÑÐ¶Ð½Ñ,Ð Ð°ÑÑ_Ð¡Ð¾ÑÑÐ¸ÑÐ¾Ð²ÐºÐ°_ÐÐ»Ð¸Ð½Ð° ÑÑÐµÑÐ¶Ð½Ñ,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,64,Ð Ð°ÑÑ_Ð¡Ð¾ÑÑÐ¸ÑÐ¾Ð²ÐºÐ°,Ð Ð°ÑÑ_Ð¡Ð¾ÑÑÐ¸ÑÐ¾Ð²ÐºÐ°,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,65,ADSK_ÐÑÐ¾ÑÑÑÐ°Ð½ÑÑÐ²ÐµÐ½Ð½ÑÐ¹ ÐºÐ°ÑÐºÐ°Ñ,PR_Spatial Frame,Instance,PR_Spatial Frame,b37704f6-8bc0-4ff7-8fcc-aca2f08f0b97,Yes/No,Data,False,False,False,"SHARED, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,66,ADSK_ÐÐ»Ð¾ÑÐºÐ¸Ð¹ ÐºÐ°ÑÐºÐ°Ñ,PR_Frame,Instance,PR_Frame,d7883213-d79a-453d-bb02-1cbdf48e28d0,Yes/No,Data,False,False,False,"SHARED, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,67,ADSK_ÐÐ°ÐºÐ»Ð°Ð´Ð½Ð°Ñ Ð´ÐµÑÐ°Ð»Ñ,PR_Embedded Detail,Instance,PR_Embedded Detail,3ca831f3-0b79-4929-b809-98527a59757d,Yes/No,Data,False,False,False,"SHARED, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,68,Ð¡Ð¾ÑÑÐ¸ÑÐ¾Ð²ÐºÐ°_ÐÐ¾Ð½ÑÑÑÑÐºÑÐ¸Ñ/ÐÐ·Ð´ÐµÐ»Ð¸Ðµ,Ð¡Ð¾ÑÑÐ¸ÑÐ¾Ð²ÐºÐ°_ÐÐ¾Ð½ÑÑÑÑÐºÑÐ¸Ñ/ÐÐ·Ð´ÐµÐ»Ð¸Ðµ,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,69,Ð¡Ð±Ð¾ÑÐ¾ÑÐ½ÑÐµ ÐµÐ´Ð¸Ð½Ð¸ÑÑ/ÐÐµÑÐ°Ð»Ð¸,Ð¡Ð±Ð¾ÑÐ¾ÑÐ½ÑÐµ ÐµÐ´Ð¸Ð½Ð¸ÑÑ/ÐÐµÑÐ°Ð»Ð¸,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,70,ADSK_Ð Ð°Ð·Ð¼ÐµÑ_ÐÐ»Ð¸Ð½Ð°,ADSK_Ð Ð°Ð·Ð¼ÐµÑ_ÐÐ»Ð¸Ð½Ð°,Instance,ADSK_Ð Ð°Ð·Ð¼ÐµÑ_ÐÐ»Ð¸Ð½Ð°,748a2515-4cc9-4b74-9a69-339a8d65a212,Length,Dimensions,False,False,False,SHARED
+Rebar_Schedule_F1,field,71,ADSK_ÐÐµÑÐ°Ð»Ñ_ÐÑÐµÑÐ¸ÐºÑ,PR_Detail_Prefix,Instance,PR_Detail_Prefix,419bcb08-39b2-4bc6-8da9-6cce92680a53,Text,Structural,False,False,False,"SHARED, HEADER_OVERRIDE"
+Rebar_Schedule_F1,field,72,Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° Ð¼Ð¿_ÐÐ·Ð´ÐµÐ»Ð¸Ñ,Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° Ð¼Ð¿_ÐÐ·Ð´ÐµÐ»Ð¸Ñ,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,73,Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° Ð¼Ð¿_ÐÐ·Ð´ÐµÐ»Ð¸Ñ+1Ð¼Ð¼,Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° Ð¼Ð¿_ÐÐ·Ð´ÐµÐ»Ð¸Ñ+1Ð¼Ð¼,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,74,%Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° Ð¼Ð¿_ÐÐ·Ð´ÐµÐ»Ð¸Ñ+1Ð¼Ð¼,%Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° Ð¼Ð¿_ÐÐ·Ð´ÐµÐ»Ð¸Ñ+1Ð¼Ð¼,Percentage,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,75,Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° Ð¼Ð¿_ÐÐ·Ð´ÐµÐ»Ð¸Ñ+1Ð¼Ð¼ / %Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° Ð¼Ð¿_ÐÐ·Ð´ÐµÐ»Ð¸Ñ+1Ð¼Ð¼,Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° Ð¼Ð¿_ÐÐ·Ð´ÐµÐ»Ð¸Ñ+1Ð¼Ð¼ / %Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° Ð¼Ð¿_ÐÐ·Ð´ÐµÐ»Ð¸Ñ+1Ð¼Ð¼,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,76,Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° Ð¼Ð¿_ÐÐ¾Ð½ÑÑÑ,Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° Ð¼Ð¿_ÐÐ¾Ð½ÑÑÑ,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,77,Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° Ð¼Ð¿_ÐÐ¾Ð½ÑÑÑ+1Ð¼Ð¼,Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° Ð¼Ð¿_ÐÐ¾Ð½ÑÑÑ+1Ð¼Ð¼,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,78,%Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° Ð¼Ð¿_ÐÐ¾Ð½ÑÑÑ+1Ð¼Ð¼,%Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° Ð¼Ð¿_ÐÐ¾Ð½ÑÑÑ+1Ð¼Ð¼,Percentage,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,79,Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° Ð¼Ð¿_ÐÐ¾Ð½ÑÑÑ+1Ð¼Ð¼ / %Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° Ð¼Ð¿_ÐÐ¾Ð½ÑÑÑ+1Ð¼Ð¼,Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° Ð¼Ð¿_ÐÐ¾Ð½ÑÑÑ+1Ð¼Ð¼ / %Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° Ð¼Ð¿_ÐÐ¾Ð½ÑÑÑ+1Ð¼Ð¼,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,80,Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° Ð¼Ð¿,Ð Ð°ÑÑ_ÐÐ»Ð¸Ð½Ð° Ð¼Ð¿,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,81,ÐÐµÐ·Ð°Ð´Ð°Ð½Ð½ÑÐ¹ Ð¿Ð°ÑÐ°Ð¼ÐµÑÑ,ÐÐµÐ·Ð°Ð´Ð°Ð½Ð½ÑÐ¹ Ð¿Ð°ÑÐ°Ð¼ÐµÑÑ,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,82,ÐÐ»Ñ_ÐÑÐ¸Ð¼ÐµÑÐ°Ð½Ð¸Ðµ Ñ Ð¾Ð±ÑÐµÐ¹ Ð¼Ð°ÑÑÐ¾Ð¹,ÐÐ»Ñ_ÐÑÐ¸Ð¼ÐµÑÐ°Ð½Ð¸Ðµ Ñ Ð¾Ð±ÑÐµÐ¹ Ð¼Ð°ÑÑÐ¾Ð¹,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,83,ÐÐ,ÐÐ,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,84,%ÐÐ,%ÐÐ,Percentage,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,85,ÐÑÐ¾Ð²ÐµÑÐºÐ° ÐÐ,ÐÑÐ¾Ð²ÐµÑÐºÐ° ÐÐ,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,86,Ð Ð°ÑÑ_ÐÐ¾ÑÑÑÐ¸ÑÐ¸ÐµÐ½Ñ,Ð Ð°ÑÑ_ÐÐ¾ÑÑÑÐ¸ÑÐ¸ÐµÐ½Ñ,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,87,ÐÐÐ­Ð¤Ð¤ÐÐ¦ÐÐÐÐ¢ ÐÐÐÐÐÐÐÐ«Ð¥,ÐÐÐ­Ð¤Ð¤ÐÐ¦ÐÐÐÐ¢ ÐÐÐÐÐÐÐÐ«Ð¥,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,88,ÐÐÐ­Ð¤Ð¤ÐÐ¦ÐÐÐÐ¢ ÐÐ ÐÐÐ¢Ð£Ð Ð«,ÐÐÐ­Ð¤Ð¤ÐÐ¦ÐÐÐÐ¢ ÐÐ ÐÐÐ¢Ð£Ð Ð«,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,field,89,ÐÐÐÐÐ ÐÐ ÐÐÐ¢Ð£Ð Ð«,ÐÐÐÐÐ ÐÐ ÐÐÐ¢Ð£Ð Ð«,Formula,<formula: >,,,,True,False,False,CALCULATED
+Rebar_Schedule_F1,sort_group,0,,Ð¡Ð±Ð¾ÑÐ¾ÑÐ½ÑÐµ ÐµÐ´Ð¸Ð½Ð¸ÑÑ/ÐÐµÑÐ°Ð»Ð¸,,,,,,,,,SortOrder=Descending
+Rebar_Schedule_F1,sort_group,1,,Ð Ð°ÑÑ_Ð¡Ð¾ÑÑÐ¸ÑÐ¾Ð²ÐºÐ°_ÐÐµÑÐ°Ð»Ñ_ÐÑÐµÑÐ¸ÐºÑ,,,,,,,,,SortOrder=Ascending
+Rebar_Schedule_F1,sort_group,2,,Ð Ð°ÑÑ_Ð¡Ð¾ÑÑÐ¸ÑÐ¾Ð²ÐºÐ°,,,,,,,,,SortOrder=Descending
+Rebar_Schedule_F1,sort_group,3,,Ð¡Ð¾ÑÑÐ¸ÑÐ¾Ð²ÐºÐ°_ÐÐ¾Ð½ÑÑÑÑÐºÑÐ¸Ñ/ÐÐ·Ð´ÐµÐ»Ð¸Ðµ,,,,,,,,,SortOrder=Ascending
+Rebar_Schedule_F1,filter,0,,Ð Ð°ÑÑ_ÐÐµÑÐºÐ° Ð¾ÑÐ½Ð¾Ð²Ñ,,,,,,,,,Equal = F1
+Rebar_Schedule_F1,filter,1,,PR_Product Mark,,,,,,,,,NotContains = Ð
+Rebar_Schedule_F1,filter,2,,PR_Name,,,,,,,,,NotContains = ÐÐ
+Rebar_Schedule_F1,filter,3,,PR_Name,,,,,,,,,NotContains = ÐÐ´
