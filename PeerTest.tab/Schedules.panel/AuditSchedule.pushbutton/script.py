@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """Pick one or more schedules → get a detailed parameter report.
 
 For each schedule field shows:

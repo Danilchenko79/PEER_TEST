@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 __title__  = 'Унификация\nАрматуры'
 __author__ = 'Dima'
-__doc__    = '''Version = 2.0
-Date      = 2026-05-28
-Description: Двухступенчатая унификация арматуры.
+__doc__    = '''Version = 3.0
+Date      = 2026-06-01
+Description: Трёхступенчатая унификация арматуры.
+   Шаг 0: выбор марки основы (хоста арматуры)
    Шаг 1: выбор формы из таблицы со сводкой
-   Шаг 2: таблица параметров (A, B) для выбранной формы + детекция перевёртышей
-   Действия: Выделить в Revit, Унифицировать (PR_A или PR_B), Поменять A↔B.
+   Шаг 2: таблица параметров (A, B) + детекция перевёртышей
+   Действия: Выделить в Revit, Унифицировать, Поменять A/B.
 How-To:
-   1. Запустите кнопку — откроется окно
-   2. Сверху выберите ОДНУ форму → внизу появится таблица её вариантов
-   3. Оранжевые строки = перевёртыши (A↔B), жёлтые = одиночные
-   4. Выделите строки (Ctrl/Shift) и нажмите нужное действие
+   1. Запустите кнопку
+   2. Шаг 0: выберите нужные марки основы (Ctrl/Shift)
+   3. Шаг 1: выберите форму
+   4. Шаг 2: выделите строки и нажмите действие
 '''
 
 import clr
@@ -26,20 +27,23 @@ from System.Windows import Window, MessageBox, MessageBoxButton, MessageBoxResul
 from System.Windows.Markup import XamlReader
 from System.Collections.Generic import List
 
-from Autodesk.Revit.DB import FilteredElementCollector, Transaction, ElementId
+from Autodesk.Revit.DB import (
+    FilteredElementCollector, Transaction, ElementId, BuiltInParameter
+)
 from Autodesk.Revit.DB.Structure import Rebar
 from pyrevit import forms
 
 uiapp = __revit__
-uidoc = uiapp.ActiveUIDocument
-doc   = uidoc.Document
+uidoc  = uiapp.ActiveUIDocument
+doc    = uidoc.Document
 
 FEET_TO_MM = 304.8
-SWAP_TOL   = 30.0  # mm tolerance for approximate swap detection
+SWAP_TOL   = 30.0
+NO_MARK    = u'(без марки)'
 
 
 # ============================================================
-# Data collection
+# Data helpers
 # ============================================================
 
 def get_param(elem, name, ptype='string'):
@@ -57,11 +61,38 @@ def get_param(elem, name, ptype='string'):
         return None
 
 
+def _host_mark(rb, rvt_doc):
+    try:
+        host = rvt_doc.GetElement(rb.GetHostId())
+        if host is None:
+            return NO_MARK
+        p = host.LookupParameter('Mark')
+        if p is None:
+            p = host.get_Parameter(BuiltInParameter.ALL_MODEL_MARK)
+        if p is not None:
+            v = p.AsString() or ''
+            return v if v else NO_MARK
+    except Exception:
+        pass
+    return NO_MARK
+
+
+# ============================================================
+# Collection
+# ============================================================
+
 def collect_all(rvt_doc):
-    """Collect rebar grouped by (shape, diam, A, B).
-       Also build shape summary and swap-candidate set."""
+    """Returns (groups, swap_keys, marks_summary).
+
+    groups   : {(shape, diam_mm, a_mm, b_mm): {count, positions, ids, mark_ids}}
+               mark_ids = {mark_str: [int_ids]}
+    swap_keys: set of keys that form A<->B pairs
+    marks_summary: {mark_str: {count, shapes: set}}
+    """
     collector = FilteredElementCollector(rvt_doc).OfClass(Rebar).ToElements()
     groups = {}
+    marks_summary = {}
+
     for rb in collector:
         try:
             shape_num = get_param(rb, 'PR_Rebar Shape', 'int') or 0
@@ -70,21 +101,30 @@ def collect_all(rvt_doc):
             a_mm      = round((get_param(rb, 'PR_A', 'double') or 0.0) * FEET_TO_MM, 1)
             b_mm      = round((get_param(rb, 'PR_B', 'double') or 0.0) * FEET_TO_MM, 1)
             pos       = get_param(rb, 'PR_Position', 'string') or ''
+            mark      = _host_mark(rb, rvt_doc)
+
             key = (shape_num, diam_mm, a_mm, b_mm)
             if key not in groups:
-                groups[key] = {'count': 0, 'positions': set(), 'ids': []}
-            groups[key]['count'] += 1
+                groups[key] = {'count': 0, 'positions': set(),
+                               'ids': [], 'mark_ids': {}}
+            g = groups[key]
+            g['count'] += 1
             if pos:
-                groups[key]['positions'].add(pos)
-            groups[key]['ids'].append(rb.Id.IntegerValue)
+                g['positions'].add(pos)
+            g['ids'].append(rb.Id.IntegerValue)
+            g['mark_ids'].setdefault(mark, []).append(rb.Id.IntegerValue)
+
+            if mark not in marks_summary:
+                marks_summary[mark] = {'count': 0, 'shapes': set()}
+            marks_summary[mark]['count'] += 1
+            marks_summary[mark]['shapes'].add(shape_num)
+
         except Exception:
             continue
 
-    # Approximate swap detection: pair (a1,b1) and (a2,b2) are swap candidates
-    # if |a1-b2| < SWAP_TOL and |b1-a2| < SWAP_TOL AND they have different
-    # orientation (i.e. not just exact duplicates).
+    # Swap detection
     swap_keys = set()
-    klist = [k for k in groups.keys() if not (k[2] == 0 and k[3] == 0)]
+    klist = [k for k in groups if not (k[2] == 0 and k[3] == 0)]
     for i in range(len(klist)):
         sh1, d1, a1, b1 = klist[i]
         if a1 == 0 or b1 == 0:
@@ -100,29 +140,54 @@ def collect_all(rvt_doc):
                     swap_keys.add(klist[i])
                     swap_keys.add(klist[j])
 
-    # Shape summary
-    shapes_summary = {}
-    for k in groups.keys():
+    return groups, swap_keys, marks_summary
+
+
+# ============================================================
+# DataTable builders
+# ============================================================
+
+def build_marks_dt(marks_summary):
+    dt = DataTable()
+    dt.Columns.Add('Марка', System.String)
+    dt.Columns.Add('Арм.',  System.Int32)
+    dt.Columns.Add('Форм',  System.Int32)
+    for mark in sorted(marks_summary.keys()):
+        s = marks_summary[mark]
+        row = dt.NewRow()
+        row['Марка'] = mark
+        row['Арм.']  = s['count']
+        row['Форм']  = len(s['shapes'])
+        dt.Rows.Add(row)
+    return dt
+
+
+def build_shape_dt(groups, swap_keys, selected_marks=None):
+    """Build shape summary, optionally filtered by selected_marks set."""
+    shapes = {}
+    for k, g in groups.items():
         sh = k[0]
-        if sh not in shapes_summary:
-            shapes_summary[sh] = {'count': 0, 'variants': 0, 'swap': 0}
-        shapes_summary[sh]['count']    += groups[k]['count']
-        shapes_summary[sh]['variants'] += 1
+        if selected_marks:
+            count = sum(len(g['mark_ids'].get(m, [])) for m in selected_marks)
+            if count == 0:
+                continue
+        else:
+            count = g['count']
+        if sh not in shapes:
+            shapes[sh] = {'count': 0, 'variants': 0, 'swap': 0}
+        shapes[sh]['count']    += count
+        shapes[sh]['variants'] += 1
         if k in swap_keys:
-            shapes_summary[sh]['swap'] += 1
+            shapes[sh]['swap'] += 1
 
-    return groups, shapes_summary, swap_keys
-
-
-def build_shape_dt(shapes_summary):
     dt = DataTable()
     dt.Columns.Add('Форма',     System.Int32)
     dt.Columns.Add('Элементов', System.Int32)
     dt.Columns.Add('Вариантов', System.Int32)
     dt.Columns.Add('Swap',      System.Int32)
     dt.Columns.Add('HasSwap',   System.Boolean)
-    for sh in sorted(shapes_summary.keys()):
-        s = shapes_summary[sh]
+    for sh in sorted(shapes.keys()):
+        s = shapes[sh]
         row = dt.NewRow()
         row['Форма']     = sh
         row['Элементов'] = s['count']
@@ -133,7 +198,9 @@ def build_shape_dt(shapes_summary):
     return dt
 
 
-def build_param_dt(groups, swap_keys, shape, f_diam='Все', f_pos='', only_swap=False):
+def build_param_dt(groups, swap_keys, shape,
+                   f_diam='Все', f_pos='', only_swap=False,
+                   selected_marks=None):
     dt = DataTable()
     dt.Columns.Add('Диам',     System.Int32)
     dt.Columns.Add('A',        System.Double)
@@ -158,9 +225,17 @@ def build_param_dt(groups, swap_keys, shape, f_diam='Все', f_pos='', only_swa
         if f_pos_str:
             if not any(f_pos_str in p for p in g['positions']):
                 continue
+
         is_swap = key in swap_keys
         if only_swap and not is_swap:
             continue
+
+        if selected_marks:
+            count = sum(len(g['mark_ids'].get(m, [])) for m in selected_marks)
+            if count == 0:
+                continue
+        else:
+            count = g['count']
 
         pos_list = sorted(g['positions'])
         pos_str  = ', '.join(pos_list[:6])
@@ -172,9 +247,9 @@ def build_param_dt(groups, swap_keys, shape, f_diam='Все', f_pos='', only_swa
         row['A']        = float(a)
         row['B']        = float(b)
         row['Сумма']    = float(a + b)
-        row['Кол-во']   = g['count']
+        row['Кол-во']   = count
         row['Позиции']  = pos_str
-        row['IsUnique'] = bool(g['count'] == 1)
+        row['IsUnique'] = bool(count == 1)
         row['IsSwap']   = bool(is_swap)
         dt.Rows.Add(row)
     return dt
@@ -187,36 +262,63 @@ def build_param_dt(groups, swap_keys, shape, f_diam='Все', f_pos='', only_swa
 XAML_STR = '''<Window
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="Унификация арматуры" Width="980" Height="820"
+    Title="Унификация арматуры v3" Width="1020" Height="980"
     WindowStartupLocation="CenterScreen">
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>   <!-- title -->
-            <RowDefinition Height="Auto"/>   <!-- Step 1 label -->
-            <RowDefinition Height="180"/>    <!-- shapes table -->
-            <RowDefinition Height="Auto"/>   <!-- Step 2 label + filters -->
-            <RowDefinition Height="*"/>      <!-- params table -->
-            <RowDefinition Height="Auto"/>   <!-- unify panel -->
-            <RowDefinition Height="Auto"/>   <!-- action buttons -->
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="160"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="160"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="Унификация арматуры" FontSize="16" FontWeight="Bold" Margin="0,0,0,6"/>
+        <TextBlock Grid.Row="0" Text="Унификация арматуры"
+                   FontSize="16" FontWeight="Bold" Margin="0,0,0,6"/>
 
-        <!-- ============ STEP 1: shape selection ============ -->
+        <!-- STEP 0: host mark -->
         <DockPanel Grid.Row="1" Margin="0,0,0,4">
-            <TextBlock Text="ШАГ 1: Выберите форму" FontWeight="SemiBold" Foreground="#1565C0"/>
-            <TextBlock x:Name="lblShapeHelp" Text="" Margin="14,0,0,0" Foreground="#666666" FontStyle="Italic"/>
+            <TextBlock Text="ШАГ 0: Марка основы" FontWeight="SemiBold"
+                       Foreground="#2E7D32" VerticalAlignment="Center"/>
+            <TextBlock x:Name="lblMarkHelp" Text="" Margin="14,0,0,0"
+                       Foreground="#666666" FontStyle="Italic" VerticalAlignment="Center"/>
         </DockPanel>
 
-        <DataGrid Grid.Row="2" x:Name="dgShapes"
+        <DataGrid Grid.Row="2" x:Name="dgMarks"
+                  AutoGenerateColumns="False"
+                  SelectionMode="Extended"
+                  IsReadOnly="True"
+                  CanUserSortColumns="True"
+                  GridLinesVisibility="Horizontal"
+                  HeadersVisibility="Column"
+                  FontSize="13" Margin="0,0,0,8">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Марка основы" Binding="{Binding [Марка]}" Width="*"/>
+                <DataGridTextColumn Header="Арматурин"    Binding="{Binding [Арм.]}"  Width="100"/>
+                <DataGridTextColumn Header="Форм"         Binding="{Binding [Форм]}"  Width="70"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- STEP 1: shape -->
+        <DockPanel Grid.Row="3" Margin="0,0,0,4">
+            <TextBlock Text="ШАГ 1: Форма" FontWeight="SemiBold"
+                       Foreground="#1565C0" VerticalAlignment="Center"/>
+            <TextBlock x:Name="lblShapeHelp" Text="" Margin="14,0,0,0"
+                       Foreground="#666666" FontStyle="Italic" VerticalAlignment="Center"/>
+        </DockPanel>
+
+        <DataGrid Grid.Row="4" x:Name="dgShapes"
                   AutoGenerateColumns="False"
                   SelectionMode="Single"
                   IsReadOnly="True"
                   CanUserSortColumns="True"
                   GridLinesVisibility="Horizontal"
                   HeadersVisibility="Column"
-                  FontSize="13"
-                  Margin="0,0,0,8">
+                  FontSize="13" Margin="0,0,0,8">
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
                     <Style.Triggers>
@@ -227,16 +329,16 @@ XAML_STR = '''<Window
                 </Style>
             </DataGrid.RowStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Форма"            Binding="{Binding [Форма]}"     Width="80"/>
-                <DataGridTextColumn Header="Элементов всего"  Binding="{Binding [Элементов]}" Width="140"/>
-                <DataGridTextColumn Header="Уник. вариантов"  Binding="{Binding [Вариантов]}" Width="140"/>
-                <DataGridTextColumn Header="Перевёрнутых"     Binding="{Binding [Swap]}"      Width="120"/>
+                <DataGridTextColumn Header="Форма"           Binding="{Binding [Форма]}"     Width="80"/>
+                <DataGridTextColumn Header="Элементов"       Binding="{Binding [Элементов]}" Width="110"/>
+                <DataGridTextColumn Header="Уник. вариантов" Binding="{Binding [Вариантов]}" Width="130"/>
+                <DataGridTextColumn Header="Перевёрнутых"    Binding="{Binding [Swap]}"      Width="120"/>
             </DataGrid.Columns>
         </DataGrid>
 
-        <!-- ============ STEP 2: params filters ============ -->
-        <Border Grid.Row="3" BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="3"
-                Padding="8,6" Margin="0,0,0,4">
+        <!-- STEP 2: filters -->
+        <Border Grid.Row="5" BorderBrush="#CCCCCC" BorderThickness="1"
+                CornerRadius="3" Padding="8,6" Margin="0,0,0,4">
             <DockPanel>
                 <TextBlock DockPanel.Dock="Left" Text="ШАГ 2:" FontWeight="SemiBold"
                            Foreground="#1565C0" VerticalAlignment="Center" Margin="0,0,12,0"/>
@@ -244,7 +346,8 @@ XAML_STR = '''<Window
                     <Label Content="Диам, мм:" VerticalAlignment="Center"/>
                     <ComboBox x:Name="cbDiam" Width="70" Margin="4,0,12,0" VerticalAlignment="Center"/>
                     <Label Content="Позиция:" VerticalAlignment="Center"/>
-                    <TextBox x:Name="tbPos" Width="70" Margin="4,0,12,0" VerticalAlignment="Center" Height="22"/>
+                    <TextBox x:Name="tbPos" Width="70" Margin="4,0,12,0"
+                             VerticalAlignment="Center" Height="22"/>
                     <CheckBox x:Name="cbSwapOnly" Content="Только перевёрнутые"
                               VerticalAlignment="Center" Margin="0,0,12,0"/>
                     <Button x:Name="btnFilter" Content="Применить" Padding="10,3" Margin="0,0,6,0"/>
@@ -253,7 +356,7 @@ XAML_STR = '''<Window
             </DockPanel>
         </Border>
 
-        <DataGrid Grid.Row="4" x:Name="dgParams"
+        <DataGrid Grid.Row="6" x:Name="dgParams"
                   AutoGenerateColumns="False"
                   SelectionMode="Extended"
                   IsReadOnly="True"
@@ -261,14 +364,14 @@ XAML_STR = '''<Window
                   CanUserResizeColumns="True"
                   GridLinesVisibility="Horizontal"
                   HeadersVisibility="Column"
-                  FontSize="13"
-                  Margin="0,0,0,6">
+                  FontSize="13" Margin="0,0,0,6">
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding [IsSwap]}" Value="True">
                             <Setter Property="Background" Value="#FFCC80"/>
-                            <Setter Property="ToolTip"    Value="Перевёртыш: есть пара с переставленными A и B"/>
+                            <Setter Property="ToolTip"
+                                    Value="Перевёртыш: есть пара с переставленными A и B"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding [IsUnique]}" Value="True">
                             <Setter Property="Background" Value="#FFFDE7"/>
@@ -277,19 +380,21 @@ XAML_STR = '''<Window
                 </Style>
             </DataGrid.RowStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Диам, мм" Binding="{Binding [Диам]}"  Width="80"/>
-                <DataGridTextColumn Header="A, мм"    Binding="{Binding [A], StringFormat=F1}"     Width="90"/>
-                <DataGridTextColumn Header="B, мм"    Binding="{Binding [B], StringFormat=F1}"     Width="90"/>
-                <DataGridTextColumn Header="A+B, мм" Binding="{Binding [Сумма], StringFormat=F1}"  Width="90"/>
-                <DataGridTextColumn Header="Кол-во"  Binding="{Binding [Кол-во]}"                  Width="70"/>
-                <DataGridTextColumn Header="Позиции" Binding="{Binding [Позиции]}"                 Width="*"/>
+                <DataGridTextColumn Header="Диам, мм" Binding="{Binding [Диам]}"                    Width="80"/>
+                <DataGridTextColumn Header="A, мм"    Binding="{Binding [A],     StringFormat=F1}"  Width="90"/>
+                <DataGridTextColumn Header="B, мм"    Binding="{Binding [B],     StringFormat=F1}"  Width="90"/>
+                <DataGridTextColumn Header="A+B, мм"  Binding="{Binding [Сумма], StringFormat=F1}"  Width="90"/>
+                <DataGridTextColumn Header="Кол-во"   Binding="{Binding [Кол-во]}"                  Width="70"/>
+                <DataGridTextColumn Header="Позиции"  Binding="{Binding [Позиции]}"                 Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
 
-        <!-- ============ Unify controls ============ -->
-        <Border Grid.Row="5" BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="3" Padding="10,6" Margin="0,0,0,6">
+        <!-- Unify controls -->
+        <Border Grid.Row="7" BorderBrush="#CCCCCC" BorderThickness="1"
+                CornerRadius="3" Padding="10,6" Margin="0,0,0,6">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <Label x:Name="lblSel" Content="Выбрано: 0 строк (0 элементов)" FontWeight="SemiBold" Margin="0,0,16,0"/>
+                <Label x:Name="lblSel" Content="Выбрано: 0 строк (0 элементов)"
+                       FontWeight="SemiBold" Margin="0,0,16,0"/>
                 <Label Content="Параметр:" Margin="0,0,4,0"/>
                 <ComboBox x:Name="cbParam" Width="65" Margin="0,0,12,0">
                     <ComboBoxItem Content="PR_A" IsSelected="True"/>
@@ -300,15 +405,20 @@ XAML_STR = '''<Window
             </StackPanel>
         </Border>
 
-        <!-- ============ Action buttons ============ -->
-        <DockPanel Grid.Row="6">
-            <Button x:Name="btnClose"  DockPanel.Dock="Right" Content="Закрыть"            Padding="10,5" Margin="6,0,0,0"/>
-            <Button x:Name="btnUnify"  DockPanel.Dock="Right" Content="Унифицировать"      Padding="10,5" Margin="6,0,0,0"
+        <!-- Action buttons -->
+        <DockPanel Grid.Row="8">
+            <Button x:Name="btnClose"  DockPanel.Dock="Right" Content="Закрыть"
+                    Padding="10,5" Margin="6,0,0,0"/>
+            <Button x:Name="btnUnify"  DockPanel.Dock="Right" Content="Унифицировать"
+                    Padding="10,5" Margin="6,0,0,0"
                     Background="#1565C0" Foreground="White" FontWeight="Bold"/>
-            <Button x:Name="btnSelect" DockPanel.Dock="Right" Content="Выделить и закрыть" Padding="10,5" Margin="6,0,0,0"/>
-            <Button x:Name="btnSwap"   DockPanel.Dock="Right" Content="Поменять A↔B"       Padding="10,5" Margin="6,0,0,0"
+            <Button x:Name="btnSelect" DockPanel.Dock="Right" Content="Выделить и закрыть"
+                    Padding="10,5" Margin="6,0,0,0"/>
+            <Button x:Name="btnSwap"   DockPanel.Dock="Right" Content="Поменять A&#8596;B"
+                    Padding="10,5" Margin="6,0,0,0"
                     Background="#F57C00" Foreground="White"/>
-            <Button x:Name="btnReload" DockPanel.Dock="Left"  Content="Перечитать модель"  Padding="10,5"/>
+            <Button x:Name="btnReload" DockPanel.Dock="Left"  Content="Перечитать модель"
+                    Padding="10,5"/>
         </DockPanel>
     </Grid>
 </Window>'''
@@ -321,14 +431,18 @@ XAML_STR = '''<Window
 class RebarWindow(object):
 
     def __init__(self):
-        self.groups, self.shapes_summary, self.swap_keys = collect_all(doc)
-        self.current_shape = None
+        self.groups, self.swap_keys, self.marks_summary = collect_all(doc)
+        self.current_shape  = None
+        self.selected_marks = set()   # empty = no filter (all marks)
+        self._init = True             # suppress events during setup
 
         self.window = XamlReader.Parse(XAML_STR)
 
+        self.dg_marks   = self.window.FindName('dgMarks')
+        self.lbl_mark   = self.window.FindName('lblMarkHelp')
         self.dg_shapes  = self.window.FindName('dgShapes')
-        self.dg_params  = self.window.FindName('dgParams')
         self.lbl_help   = self.window.FindName('lblShapeHelp')
+        self.dg_params  = self.window.FindName('dgParams')
         self.cb_diam    = self.window.FindName('cbDiam')
         self.tb_pos     = self.window.FindName('tbPos')
         self.cb_swap    = self.window.FindName('cbSwapOnly')
@@ -343,15 +457,15 @@ class RebarWindow(object):
         self.btn_reload = self.window.FindName('btnReload')
         self.btn_close  = self.window.FindName('btnClose')
 
-        # Fill shapes table
+        # Populate
+        self._refresh_marks()
         self._refresh_shapes()
         self._fill_diam_combo()
-
-        # Empty params table initially
         self.dg_params.ItemsSource = build_param_dt(
             self.groups, self.swap_keys, -1).DefaultView
 
-        # Wire events
+        # Wire events (after populate so _init guard works)
+        self.dg_marks.SelectionChanged  += self._safe(self._on_mark_selected)
         self.dg_shapes.SelectionChanged += self._safe(self._on_shape_selected)
         self.dg_params.SelectionChanged += self._safe(self._on_params_selected)
         self.btn_filter.Click += self._safe(self._on_filter)
@@ -362,29 +476,31 @@ class RebarWindow(object):
         self.btn_reload.Click += self._safe(self._on_reload)
         self.btn_close.Click  += self._safe(self._on_close)
 
-        # Auto-select first shape for convenience
+        self._init = False
+
         if self.dg_shapes.Items.Count > 0:
             self.dg_shapes.SelectedIndex = 0
 
-        # MODAL — selection and transactions work synchronously
         self.window.ShowDialog()
 
-    # ---------------- safety ----------------
+    # ---- safety wrapper ----
     def _safe(self, fn):
         def wrapper(sender, args):
+            if self._init:
+                return
             try:
                 fn(sender, args)
             except Exception as ex:
                 import traceback
                 try:
-                    MessageBox.Show('Ошибка:\n{}\n\n{}'.format(
-                        str(ex), traceback.format_exc()),
+                    MessageBox.Show(
+                        'Ошибка:\n{}\n\n{}'.format(str(ex), traceback.format_exc()),
                         'Ошибка', MessageBoxButton.OK)
                 except Exception:
                     pass
         return wrapper
 
-    # ---------------- robust row read ----------------
+    # ---- row value helper ----
     def _row_get(self, row, col_name, col_index):
         for fn in (lambda: row[col_name],
                    lambda: row.Row[col_name],
@@ -397,15 +513,40 @@ class RebarWindow(object):
                 pass
         return None
 
-    # ---------------- shapes table ----------------
+    # ---- marks (Step 0) ----
+    def _refresh_marks(self):
+        dt = build_marks_dt(self.marks_summary)
+        self.dg_marks.ItemsSource = dt.DefaultView
+        total = sum(s['count'] for s in self.marks_summary.values())
+        self.lbl_mark.Text = u'Всего: {} эл., {} хостов. Выберите строки для фильтрации.'.format(
+            total, len(self.marks_summary))
+
+    def _on_mark_selected(self, sender, args):
+        selected = set()
+        for row in self.dg_marks.SelectedItems:
+            m = self._row_get(row, 'Марка', 0)
+            if m is not None:
+                selected.add(str(m))
+        # all or none selected => no filter
+        if len(selected) == 0 or len(selected) == len(self.marks_summary):
+            self.selected_marks = set()
+        else:
+            self.selected_marks = selected
+        self.current_shape = None
+        self._refresh_shapes()
+        self._fill_diam_combo()
+        self.dg_params.ItemsSource = build_param_dt(
+            self.groups, self.swap_keys, -1).DefaultView
+        self._update_sel_label()
+
+    # ---- shapes (Step 1) ----
     def _refresh_shapes(self):
-        dt = build_shape_dt(self.shapes_summary)
+        sm = self.selected_marks if self.selected_marks else None
+        dt = build_shape_dt(self.groups, self.swap_keys, sm)
         self.dg_shapes.ItemsSource = dt.DefaultView
-        total = sum(s['count'] for s in self.shapes_summary.values())
-        total_swap = sum(s['swap'] for s in self.shapes_summary.values())
-        # lbl_help is a TextBlock -> use .Text, not .Content
-        self.lbl_help.Text = 'Всего: {} элементов, {} форм. Перевёртышей: {}'.format(
-            total, len(self.shapes_summary), total_swap)
+        total_hosts = len(self.marks_summary)
+        sel = len(self.selected_marks) if self.selected_marks else total_hosts
+        self.lbl_help.Text = u'Фильтр: {} из {} хостов'.format(sel, total_hosts)
 
     def _on_shape_selected(self, sender, args):
         if self.dg_shapes.SelectedItem is None:
@@ -418,25 +559,32 @@ class RebarWindow(object):
         self._fill_diam_combo()
         self._refresh_params()
 
-    # ---------------- diam combo ----------------
+    # ---- diam combo ----
     def _fill_diam_combo(self):
         self.cb_diam.Items.Clear()
         self.cb_diam.Items.Add('Все')
-        diams = sorted(set(k[1] for k in self.groups.keys()
-                       if self.current_shape is None or k[0] == self.current_shape))
-        for d in diams:
+        sm = self.selected_marks if self.selected_marks else None
+        diams = set()
+        for k, g in self.groups.items():
+            if self.current_shape is not None and k[0] != self.current_shape:
+                continue
+            if sm and not any(g['mark_ids'].get(m) for m in sm):
+                continue
+            diams.add(k[1])
+        for d in sorted(diams):
             self.cb_diam.Items.Add(str(d))
         self.cb_diam.SelectedIndex = 0
 
-    # ---------------- params table ----------------
+    # ---- params (Step 2) ----
     def _refresh_params(self):
         if self.current_shape is None:
             return
-        f_diam = str(self.cb_diam.SelectedItem or 'Все')
-        f_pos  = self.tb_pos.Text or ''
+        f_diam    = str(self.cb_diam.SelectedItem or 'Все')
+        f_pos     = self.tb_pos.Text or ''
         only_swap = bool(self.cb_swap.IsChecked)
+        sm        = self.selected_marks if self.selected_marks else None
         dt = build_param_dt(self.groups, self.swap_keys,
-                            self.current_shape, f_diam, f_pos, only_swap)
+                            self.current_shape, f_diam, f_pos, only_swap, sm)
         self.dg_params.ItemsSource = dt.DefaultView
         self._update_sel_label()
 
@@ -454,7 +602,6 @@ class RebarWindow(object):
 
     def _update_sel_label(self):
         rows = list(self.dg_params.SelectedItems)
-        n_rows = len(rows)
         n_elems = 0
         for row in rows:
             v = self._row_get(row, 'Кол-во', 4)
@@ -463,11 +610,11 @@ class RebarWindow(object):
                     n_elems += int(v)
             except Exception:
                 pass
-        self.lbl_sel.Content = 'Выбрано: {} строк ({} элементов)'.format(n_rows, n_elems)
+        self.lbl_sel.Content = u'Выбрано: {} строк ({} элементов)'.format(
+            len(rows), n_elems)
 
-    # ---------------- get selected keys / ids ----------------
+    # ---- key / id helpers ----
     def _selected_keys(self):
-        """Return list of (shape, diam, a, b) keys for selected rows."""
         keys = []
         if self.current_shape is None:
             return keys
@@ -479,13 +626,11 @@ class RebarWindow(object):
                 if None in (d, a, b):
                     continue
                 d = int(d); a = float(a); b = float(b)
-                # exact match
                 key = (self.current_shape, d, round(a, 1), round(b, 1))
                 if key in self.groups:
                     keys.append(key)
                     continue
-                # fuzzy match
-                for k in self.groups.keys():
+                for k in self.groups:
                     if (k[0] == self.current_shape and k[1] == d
                             and abs(k[2] - a) < 0.05
                             and abs(k[3] - b) < 0.05):
@@ -495,18 +640,27 @@ class RebarWindow(object):
                 pass
         return keys
 
+    def _get_filtered_ids(self, key):
+        g = self.groups[key]
+        if not self.selected_marks:
+            return list(g['ids'])
+        ids = []
+        for mark in self.selected_marks:
+            ids.extend(g['mark_ids'].get(mark, []))
+        return ids
+
     def _selected_ids(self):
         ids = []
         for k in self._selected_keys():
-            ids.extend(self.groups[k]['ids'])
+            ids.extend(self._get_filtered_ids(k))
         return ids
 
-    # ---------------- actions ----------------
+    # ---- actions ----
     def _on_select(self, sender, args):
         ids = self._selected_ids()
         if not ids:
-            MessageBox.Show('Выделите строки в нижней таблице.',
-                            'Выделение', MessageBoxButton.OK)
+            MessageBox.Show(u'Выделите строки в нижней таблице.',
+                            u'Выделение', MessageBoxButton.OK)
             return
         id_list = List[ElementId]([ElementId(i) for i in ids])
         uidoc.Selection.SetElementIds(id_list)
@@ -517,18 +671,14 @@ class RebarWindow(object):
         self.window.Close()
 
     def _on_unify(self, sender, args):
-        keys = self._selected_keys()
-        ids  = []
-        for k in keys:
-            ids.extend(self.groups[k]['ids'])
+        ids = self._selected_ids()
         if not ids:
-            MessageBox.Show('Выделите строки в нижней таблице.',
-                            'Унификация', MessageBoxButton.OK)
+            MessageBox.Show(u'Выделите строки в нижней таблице.',
+                            u'Унификация', MessageBoxButton.OK)
             return
-
         sel = self.cb_param.SelectedItem
         if sel is None:
-            MessageBox.Show('Выберите параметр.', 'Ошибка', MessageBoxButton.OK)
+            MessageBox.Show(u'Выберите параметр.', u'Ошибка', MessageBoxButton.OK)
             return
         try:
             pname = str(sel.Content)
@@ -537,53 +687,46 @@ class RebarWindow(object):
 
         raw = (self.tb_value.Text or '').strip().replace(',', '.')
         if not raw:
-            MessageBox.Show('Введите значение в мм.', 'Ошибка', MessageBoxButton.OK)
+            MessageBox.Show(u'Введите значение в мм.', u'Ошибка', MessageBoxButton.OK)
             return
         try:
             tgt_mm = float(raw)
         except Exception:
-            MessageBox.Show('Не разобрать число: "{}"'.format(raw),
-                            'Ошибка', MessageBoxButton.OK)
+            MessageBox.Show(u'Не разобрать число: "{}"'.format(raw),
+                            u'Ошибка', MessageBoxButton.OK)
             return
 
         confirm = MessageBox.Show(
-            'Изменить {} = {:.1f} мм для {} элементов?'.format(pname, tgt_mm, len(ids)),
-            'Подтверждение', MessageBoxButton.OKCancel)
+            u'Изменить {} = {:.1f} мм для {} элементов?'.format(pname, tgt_mm, len(ids)),
+            u'Подтверждение', MessageBoxButton.OKCancel)
         if confirm != MessageBoxResult.OK:
             return
 
-        tgt_ft = tgt_mm / FEET_TO_MM
-        changed, errors = self._apply_set(ids, pname, tgt_ft)
-
+        changed, errors = self._apply_set(ids, pname, tgt_mm / FEET_TO_MM)
         self._reload_and_refresh()
-        msg = 'Изменено: {} элементов'.format(changed)
+        msg = u'Изменено: {} элементов'.format(changed)
         if errors:
-            msg += '\nОшибок: {}\n\n{}'.format(len(errors), '\n'.join(errors[:5]))
-        MessageBox.Show(msg, 'Готово', MessageBoxButton.OK)
+            msg += u'\nОшибок: {}\n\n{}'.format(len(errors), '\n'.join(errors[:5]))
+        MessageBox.Show(msg, u'Готово', MessageBoxButton.OK)
 
     def _on_swap(self, sender, args):
-        """For each selected rebar, swap PR_A and PR_B values."""
-        keys = self._selected_keys()
-        ids  = []
-        for k in keys:
-            ids.extend(self.groups[k]['ids'])
+        ids = self._selected_ids()
         if not ids:
-            MessageBox.Show('Выделите строки в нижней таблице.',
-                            'A↔B', MessageBoxButton.OK)
+            MessageBox.Show(u'Выделите строки в нижней таблице.',
+                            u'A<->B', MessageBoxButton.OK)
             return
-
         confirm = MessageBox.Show(
-            'Поменять местами PR_A ↔ PR_B для {} элементов?'.format(len(ids)),
-            'Подтверждение', MessageBoxButton.OKCancel)
+            u'Поменять местами PR_A <-> PR_B для {} элементов?'.format(len(ids)),
+            u'Подтверждение', MessageBoxButton.OKCancel)
         if confirm != MessageBoxResult.OK:
             return
 
         changed, errors = self._apply_swap(ids)
         self._reload_and_refresh()
-        msg = 'Поменяно A↔B: {} элементов'.format(changed)
+        msg = u'Поменяно A<->B: {} элементов'.format(changed)
         if errors:
-            msg += '\nОшибок: {}\n\n{}'.format(len(errors), '\n'.join(errors[:5]))
-        MessageBox.Show(msg, 'Готово', MessageBoxButton.OK)
+            msg += u'\nОшибок: {}\n\n{}'.format(len(errors), '\n'.join(errors[:5]))
+        MessageBox.Show(msg, u'Готово', MessageBoxButton.OK)
 
     def _on_reload(self, sender, args):
         self._reload_and_refresh()
@@ -591,11 +734,11 @@ class RebarWindow(object):
     def _on_close(self, sender, args):
         self.window.Close()
 
-    # ---------------- transaction helpers ----------------
+    # ---- transactions ----
     def _apply_set(self, ids, param_name, value_ft):
         changed = 0
-        errors = []
-        t = Transaction(doc, 'Унификация {}'.format(param_name))
+        errors  = []
+        t = Transaction(doc, u'Унификация {}'.format(param_name))
         t.Start()
         try:
             for eid in ids:
@@ -620,7 +763,7 @@ class RebarWindow(object):
 
     def _apply_swap(self, ids):
         changed = 0
-        errors = []
+        errors  = []
         t = Transaction(doc, 'Swap PR_A <-> PR_B')
         t.Start()
         try:
@@ -631,8 +774,7 @@ class RebarWindow(object):
                         continue
                     pA = el.LookupParameter('PR_A')
                     pB = el.LookupParameter('PR_B')
-                    if (pA is None or pB is None
-                            or pA.IsReadOnly or pB.IsReadOnly):
+                    if pA is None or pB is None or pA.IsReadOnly or pB.IsReadOnly:
                         errors.append('ID {}: PR_A или PR_B недоступен'.format(eid))
                         continue
                     a = pA.AsDouble()
@@ -649,21 +791,27 @@ class RebarWindow(object):
             errors.append('Transaction: {}'.format(str(ex)))
         return changed, errors
 
-    # ---------------- refresh after edit ----------------
+    # ---- reload after edit ----
     def _reload_and_refresh(self):
         prev_shape = self.current_shape
-        self.groups, self.shapes_summary, self.swap_keys = collect_all(doc)
+        prev_marks = set(self.selected_marks)
+        self._init = True
+        self.groups, self.swap_keys, self.marks_summary = collect_all(doc)
+        self.selected_marks = prev_marks
+        self._refresh_marks()
         self._refresh_shapes()
-        # Restore previously selected shape
+        self._fill_diam_combo()
+        # Restore shape selection
         if prev_shape is not None:
             for i in range(self.dg_shapes.Items.Count):
                 row = self.dg_shapes.Items[i]
                 sh = self._row_get(row, 'Форма', 0)
                 if sh is not None and int(sh) == prev_shape:
+                    self._init = False
                     self.dg_shapes.SelectedIndex = i
-                    break
-        else:
-            self._refresh_params()
+                    return
+        self._init = False
+        self._refresh_params()
 
 
 # ============================================================
@@ -674,7 +822,8 @@ try:
 except Exception as ex:
     import traceback
     try:
-        forms.alert('Ошибка запуска:\n{}\n\n{}'.format(str(ex), traceback.format_exc()),
-                    title='RebarUnify')
+        forms.alert(
+            u'Ошибка запуска:\n{}\n\n{}'.format(str(ex), traceback.format_exc()),
+            title='RebarUnify')
     except Exception:
         pass

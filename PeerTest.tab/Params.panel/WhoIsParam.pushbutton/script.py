@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """For each ADSK_* / PR_* shared parameter in the project, show:
 
 - GUID

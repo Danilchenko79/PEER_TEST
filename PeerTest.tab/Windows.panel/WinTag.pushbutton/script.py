@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """WinTag - parameters for windows + missing tags on plan views.
 
 WHAT IT DOES

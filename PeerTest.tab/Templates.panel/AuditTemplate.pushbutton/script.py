@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """Audit ADSK BIM2B template after migration to PR_* shared parameters.
 
 Collects everything still referencing the old Russian ADSK_* parameters or the

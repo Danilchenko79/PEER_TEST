@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """Transfer Combined Parameters from a source document to the active document.
 
 WHY THIS IS NEEDED
