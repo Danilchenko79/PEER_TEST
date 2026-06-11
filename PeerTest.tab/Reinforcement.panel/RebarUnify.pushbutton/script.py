@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 __title__  = 'Унификация\nАрматуры'
 __author__ = 'Dima'
 __doc__    = '''Version = 3.0
@@ -14,6 +14,10 @@ How-To:
    3. Шаг 1: выберите форму
    4. Шаг 2: выделите строки и нажмите действие
 '''
+
+# Окно немодальное (Revit остаётся доступным), поэтому движок pyRevit
+# нужно держать живым после завершения скрипта.
+__persistentengine__ = True
 
 import clr
 clr.AddReference('PresentationFramework')
@@ -31,6 +35,7 @@ from Autodesk.Revit.DB import (
     FilteredElementCollector, Transaction, ElementId, BuiltInParameter
 )
 from Autodesk.Revit.DB.Structure import Rebar
+from Autodesk.Revit.UI import IExternalEventHandler, ExternalEvent
 from pyrevit import forms
 
 uiapp = __revit__
@@ -392,17 +397,25 @@ XAML_STR = '''<Window
         <!-- Unify controls -->
         <Border Grid.Row="7" BorderBrush="#CCCCCC" BorderThickness="1"
                 CornerRadius="3" Padding="10,6" Margin="0,0,0,6">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <Label x:Name="lblSel" Content="Выбрано: 0 строк (0 элементов)"
-                       FontWeight="SemiBold" Margin="0,0,16,0"/>
-                <Label Content="Параметр:" Margin="0,0,4,0"/>
-                <ComboBox x:Name="cbParam" Width="65" Margin="0,0,12,0">
-                    <ComboBoxItem Content="PR_A" IsSelected="True"/>
-                    <ComboBoxItem Content="PR_B"/>
-                </ComboBox>
-                <Label Content="Значение (мм):" Margin="0,0,4,0"/>
-                <TextBox x:Name="tbValue" Width="85" Height="22"/>
-            </StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Label x:Name="lblSel" Content="Выбрано: 0 строк (0 элементов)"
+                           FontWeight="SemiBold" Margin="0,0,16,0"/>
+                    <Label Content="Параметр:" Margin="0,0,4,0"/>
+                    <ComboBox x:Name="cbParam" Width="65" Margin="0,0,12,0">
+                        <ComboBoxItem Content="PR_A" IsSelected="True"/>
+                        <ComboBoxItem Content="PR_B"/>
+                    </ComboBox>
+                    <Label Content="Значение (мм):" Margin="0,0,4,0"/>
+                    <TextBox x:Name="tbValue" Width="85" Height="22"/>
+                </StackPanel>
+                <TextBlock Grid.Row="1" x:Name="lblStatus" Text=""
+                           Margin="4,4,0,0" FontStyle="Italic" Foreground="#2E7D32"/>
+            </Grid>
         </Border>
 
         <!-- Action buttons -->
@@ -412,7 +425,7 @@ XAML_STR = '''<Window
             <Button x:Name="btnUnify"  DockPanel.Dock="Right" Content="Унифицировать"
                     Padding="10,5" Margin="6,0,0,0"
                     Background="#1565C0" Foreground="White" FontWeight="Bold"/>
-            <Button x:Name="btnSelect" DockPanel.Dock="Right" Content="Выделить и закрыть"
+            <Button x:Name="btnSelect" DockPanel.Dock="Right" Content="Выделить в Revit"
                     Padding="10,5" Margin="6,0,0,0"/>
             <Button x:Name="btnSwap"   DockPanel.Dock="Right" Content="Поменять A&#8596;B"
                     Padding="10,5" Margin="6,0,0,0"
@@ -422,6 +435,41 @@ XAML_STR = '''<Window
         </DockPanel>
     </Grid>
 </Window>'''
+
+
+# ============================================================
+# External event handler (для немодального окна)
+# ============================================================
+# Любые операции с моделью (выделение, транзакции) из немодального
+# окна обязаны выполняться внутри ExternalEvent.Execute — иначе Revit
+# бросит "outside of API context". Обработчик просто выполняет
+# отложенное действие (callable), переданное из окна.
+
+class _RebarEventHandler(IExternalEventHandler):
+    def __init__(self):
+        self._action = None
+
+    def set_action(self, fn):
+        self._action = fn
+
+    def Execute(self, uiapp):
+        fn = self._action
+        self._action = None
+        if fn is None:
+            return
+        try:
+            fn(uiapp)
+        except Exception as ex:
+            import traceback
+            try:
+                MessageBox.Show(
+                    u'Ошибка операции:\n{}\n\n{}'.format(str(ex), traceback.format_exc()),
+                    u'Ошибка', MessageBoxButton.OK)
+            except Exception:
+                pass
+
+    def GetName(self):
+        return 'PEER RebarUnify Handler'
 
 
 # ============================================================
@@ -435,6 +483,10 @@ class RebarWindow(object):
         self.current_shape  = None
         self.selected_marks = set()   # empty = no filter (all marks)
         self._init = True             # suppress events during setup
+
+        # ExternalEvent — мост для работы с моделью из немодального окна.
+        self.handler   = _RebarEventHandler()
+        self.ext_event = ExternalEvent.Create(self.handler)
 
         self.window = XamlReader.Parse(XAML_STR)
 
@@ -456,6 +508,7 @@ class RebarWindow(object):
         self.btn_unify  = self.window.FindName('btnUnify')
         self.btn_reload = self.window.FindName('btnReload')
         self.btn_close  = self.window.FindName('btnClose')
+        self.lbl_status = self.window.FindName('lblStatus')
 
         # Populate
         self._refresh_marks()
@@ -481,7 +534,14 @@ class RebarWindow(object):
         if self.dg_shapes.Items.Count > 0:
             self.dg_shapes.SelectedIndex = 0
 
-        self.window.ShowDialog()
+        # Немодальный показ: Revit остаётся доступным, окно можно не закрывать.
+        self.window.Show()
+
+    # ---- defer model work to ExternalEvent ----
+    def _raise(self, fn):
+        """Выполнить fn(uiapp) в корректном Revit API-контексте."""
+        self.handler.set_action(fn)
+        self.ext_event.Raise()
 
     # ---- safety wrapper ----
     def _safe(self, fn):
@@ -656,19 +716,32 @@ class RebarWindow(object):
         return ids
 
     # ---- actions ----
+    def _set_status(self, text, ok=True):
+        try:
+            self.lbl_status.Text = text
+            self.lbl_status.Foreground = (
+                System.Windows.Media.Brushes.Green if ok
+                else System.Windows.Media.Brushes.OrangeRed)
+        except Exception:
+            pass
+
     def _on_select(self, sender, args):
         ids = self._selected_ids()
         if not ids:
-            MessageBox.Show(u'Выделите строки в нижней таблице.',
-                            u'Выделение', MessageBoxButton.OK)
+            self._set_status(u'Нет выбранных строк — выделите строки в таблице.', ok=False)
             return
-        id_list = List[ElementId]([ElementId(i) for i in ids])
-        uidoc.Selection.SetElementIds(id_list)
-        try:
-            uidoc.ShowElements(id_list)
-        except Exception:
-            pass
-        self.window.Close()
+
+        def action(uiapp):
+            id_list = List[ElementId]([ElementId(i) for i in ids])
+            uidoc.Selection.SetElementIds(id_list)
+            try:
+                uidoc.ShowElements(id_list)
+            except Exception:
+                pass
+            self._set_status(
+                u'Выделено в Revit: {} элементов. Окно можно не закрывать.'.format(len(ids)))
+
+        self._raise(action)
 
     def _on_unify(self, sender, args):
         ids = self._selected_ids()
@@ -702,12 +775,18 @@ class RebarWindow(object):
         if confirm != MessageBoxResult.OK:
             return
 
-        changed, errors = self._apply_set(ids, pname, tgt_mm / FEET_TO_MM)
-        self._reload_and_refresh()
-        msg = u'Изменено: {} элементов'.format(changed)
-        if errors:
-            msg += u'\nОшибок: {}\n\n{}'.format(len(errors), '\n'.join(errors[:5]))
-        MessageBox.Show(msg, u'Готово', MessageBoxButton.OK)
+        value_ft = tgt_mm / FEET_TO_MM
+
+        def action(uiapp):
+            changed, errors = self._apply_set(ids, pname, value_ft)
+            self._reload_and_refresh()
+            self._set_status(u'')
+            msg = u'Изменено: {} элементов'.format(changed)
+            if errors:
+                msg += u'\nОшибок: {}\n\n{}'.format(len(errors), '\n'.join(errors[:5]))
+            MessageBox.Show(msg, u'Готово', MessageBoxButton.OK)
+
+        self._raise(action)
 
     def _on_swap(self, sender, args):
         ids = self._selected_ids()
@@ -721,12 +800,16 @@ class RebarWindow(object):
         if confirm != MessageBoxResult.OK:
             return
 
-        changed, errors = self._apply_swap(ids)
-        self._reload_and_refresh()
-        msg = u'Поменяно A<->B: {} элементов'.format(changed)
-        if errors:
-            msg += u'\nОшибок: {}\n\n{}'.format(len(errors), '\n'.join(errors[:5]))
-        MessageBox.Show(msg, u'Готово', MessageBoxButton.OK)
+        def action(uiapp):
+            changed, errors = self._apply_swap(ids)
+            self._reload_and_refresh()
+            self._set_status(u'')
+            msg = u'Поменяно A<->B: {} элементов'.format(changed)
+            if errors:
+                msg += u'\nОшибок: {}\n\n{}'.format(len(errors), '\n'.join(errors[:5]))
+            MessageBox.Show(msg, u'Готово', MessageBoxButton.OK)
+
+        self._raise(action)
 
     def _on_reload(self, sender, args):
         self._reload_and_refresh()
@@ -818,7 +901,9 @@ class RebarWindow(object):
 # Entry point
 # ============================================================
 try:
-    RebarWindow()
+    # Глобальная ссылка нужна, чтобы немодальное окно и его ExternalEvent
+    # не были собраны GC после завершения скрипта.
+    __rebar_unify_window__ = RebarWindow()
 except Exception as ex:
     import traceback
     try:
